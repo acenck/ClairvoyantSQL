@@ -1,0 +1,64 @@
+﻿@using ClairvoyantSQL.Models
+
+@model List<Contact>
+
+
+<p>Number of Contacts: @Model.Count</p>
+
+<p></p>
+
+
+
+<h1>Contacts</h1>
+<a asp-controller="Contacts" asp-action="Add">Add Contact</a>
+
+
+
+<table class="table">
+    <tr class="font-weight-normal">
+        <th>
+            First
+        </th>
+
+        <th>
+            Last
+        </th>
+        <th>
+            Phone
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Contact Label
+        </th>
+        <th>
+            Event
+        </th>
+        <th>
+            Event Date
+        </th>
+        <th>
+            Message
+        </th>
+    </tr>
+
+    @foreach(var cnt in Model)
+            {
+                <tr>
+                    <td>@cnt.FirstName</td>
+                    <td>@cnt.LastName</td>
+                    <td>@cnt.Phone</td>
+                    <td>@cnt.Email</td>
+                    <td>@cnt.Type</td>
+                    <td>@cnt.Id</td>
+                    <td><a asp-controller="Contacts" asp-action="Edit" asp-route-id="@cnt.Id">Edit</a></td>
+                    @*<td>@cnt.EventType.Name</td>
+                    <td>@cnt.EventType.Date</td>
+                    <td>@cnt.EventType.Message</td>*@
+                </tr>
+
+            }
+    </table>
+
+

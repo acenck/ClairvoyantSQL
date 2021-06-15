@@ -1,0 +1,47 @@
+﻿@using ClairvoyantSQL.ViewModels
+
+@model AddContactViewModel;
+
+<h1>New Contact</h1>
+
+<form asp-controller="Contacts" asp-action="Add" method="post" class="form-group">
+
+    
+
+        <div  class="form-group">
+            <label asp-for="FirstName">First Name</label>
+            <input asp-for="FirstName"/>
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName">Last Name</label>
+            <input asp-for="LastName" />
+            <span asp-validation-for="LastName"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Phone">Phone</label>
+            <input asp-for="Phone" />
+            <span asp-validation-for="Phone"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Type">Contact Label</label>
+            <select asp-for="Type" asp-items="Model.ContactTypes"></select>
+            <span asp-validation-for="Type"></span>
+        </div>
+        @*<div>
+            <label>Event</label>
+            <input name="event" type="text" class=" form-control"/>
+        </div>*@
+
+    
+    <input type="submit" value"Confirm" />
+
+</form>
+   
+
+

@@ -1,0 +1,48 @@
+﻿@{
+}
+
+<div class="container-sm shadow p-3 mb-5 bg-white rounded">
+
+    <h1>Edit Contact</h1>
+
+    <form method="post" action="/contacts/edit">
+
+        @{ var evt = ViewBag.contactToEdit;}
+        <input type="hidden" value="@ViewBag.contactToEdit.Id" name="contactId" />
+
+        <div class="form-group">
+
+            <div>
+                <label>First</label>
+                <input name="firstname" type="text" class="form-control" value="@evt.FirstName"/>
+            </div>
+            <div>
+                <label>Last</label>
+                <input name="lastname" type="text" class="form-control" value="@evt.LastName" />
+            </div>
+            <div>
+                <label>Phone</label>
+                <input name="phone" type="text" class="form-control" value="@evt.Phone"/>
+            </div>
+            <div>
+                <label>Email</label>
+                <input name="email" type="text" class="form-control" value="@evt.Email"/>
+            </div>
+            @*<div>
+                <label>Event</label>
+                <input name="event" type="text" class=" form-control"/>
+            </div>*@
+
+        </div>
+
+
+        <input style="display: inline-block;" type="submit" class="btn btn-outline-primary" value="Save" />
+
+    </form>
+
+    <form style="display:inline-block" method="get" action="/contacts/delete">
+        <input type="hidden" value="@ViewBag.contactToEdit.Id" name="contactId" />
+
+        <input type="submit" class="btn btn-danger" value="Delete" />
+    </form>
+</div>
