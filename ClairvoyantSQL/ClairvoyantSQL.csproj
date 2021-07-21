@@ -8,9 +8,16 @@
     <Folder Include="Views\Contacts\" />
     <Folder Include="Data\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\ContactCategory\" />
+    <Folder Include="Views\ContactEvent\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.14" />
   </ItemGroup>
 </Project>

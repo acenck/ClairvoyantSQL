@@ -1,5 +1,10 @@
-﻿@{
+﻿    @{
 }
+
+@using ClairvoyantSQL.ViewModels        
+
+@model AddContactViewModel
+
 
 <div class="container-sm shadow p-3 mb-5 bg-white rounded">
 
@@ -8,32 +13,55 @@
     <form method="post" action="/contacts/edit">
 
         @{ var evt = ViewBag.contactToEdit;}
+
         <input type="hidden" value="@ViewBag.contactToEdit.Id" name="contactId" />
 
-        <div class="form-group">
 
-            <div>
+        <div class="form-group">
+            <div class="form-group">
                 <label>First</label>
-                <input name="firstname" type="text" class="form-control" value="@evt.FirstName"/>
+                <input asp-for="FirstName" type="text" class="form-control" value="@Model.FirstName" />
+                <span asp-validation-for="FirstName"></span>
             </div>
             <div>
                 <label>Last</label>
-                <input name="lastname" type="text" class="form-control" value="@evt.LastName" />
+                <input asp-for="LastName" type="text" class="form-control" value="@Model.LastName" />
+                <span asp-validation-for="LastName"></span>
             </div>
             <div>
                 <label>Phone</label>
-                <input name="phone" type="text" class="form-control" value="@evt.Phone"/>
+                <input asp-for="Phone" type="text" class="form-control" value="@Model.Phone" />
+                <span asp-validation-for="Phone"></span>
             </div>
             <div>
                 <label>Email</label>
-                <input name="email" type="text" class="form-control" value="@evt.Email"/>
+                <input asp-for="Email" type="text" class="form-control" value="@Model.Email" />
+                <span asp-validation-for="Email"></span>
             </div>
-            @*<div>
-                <label>Event</label>
-                <input name="event" type="text" class=" form-control"/>
-            </div>*@
-
+            <div class="form-group">
+                <label asp-for="CategoryId">Contact Category</label>
+                <select asp-for="CategoryId" asp-items="@Model.Categories"></select>
+            </div>
         </div>
+
+
+        @*<div>
+            <a asp-controller="ContactEvent" asp-action="Create" asp-route-id="@evt.Id">Edit</a>
+            <table>
+
+                @foreach (var item in Model.events)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Message</td>
+                        <td><a asp-controller="ContactEvent" asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
+                    </tr>
+                }
+            </table>
+        </div>*@
+
+                
+
 
 
         <input style="display: inline-block;" type="submit" class="btn btn-outline-primary" value="Save" />

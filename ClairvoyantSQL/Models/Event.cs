@@ -4,6 +4,7 @@ namespace ClairvoyantSQL.Models
     public class Event
     {
 
+        public int Id {get; set;} 
 
         public string Name { get; set; }
 
@@ -11,14 +12,17 @@ namespace ClairvoyantSQL.Models
 
         public string Message { get; set; }
 
-
-
-
-
-        public Event()
+        public int Countdown
         {
-
+            get => (Date - DateTime.Today).Days;
+            private set { }
         }
+
+
+        public virtual Contact AssignedContact { get; set; }
+        public int ContactId { get; set; }
+
+
 
         public Event(string name, DateTime date, string message)
         {
@@ -26,5 +30,28 @@ namespace ClairvoyantSQL.Models
             Date = date;
             Message = message;
         }
+
+        public Event()
+        {
+
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Event @event &&
+                Id == @event.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
+
+
     }
 }
+
+
+
+
+

@@ -1,35 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ClairvoyantSQL.Data;
+
 namespace ClairvoyantSQL.Models
 {
     public class Contact
     {
 
-        public int Id { get; }
+        private ContactDbContext context;
 
-        static private int nextId = 1;
+        public Contact(ContactDbContext dbContext)
+        {
+            context = dbContext;
+        }
 
+
+        public int Id { get; set; }
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
-
         public string Phone { get; set; }
-
         public string Email { get; set; }
 
-        public ContactType Type { get; set; }
+        public ContactCategory Category { get; set; }
+        public int CategoryId { get; set; }
 
+        public List<Event> events { get; set; }
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        
+        
 
-        //public Event EventType { get; set; }
 
-
-
-        public Contact()
-        {
-            Id = nextId;
-            nextId++;
-        }
 
         public Contact(string firstname, string lastname, string phone, string email)
         {
@@ -37,11 +39,18 @@ namespace ClairvoyantSQL.Models
             LastName = lastname;
             Phone = phone;
             Email = email;
+            events = context.Events
+                .Where(x => x.ContactId == Id)
+                .ToList();
+                   
             
-
-            Id = nextId;
-            nextId++;
         }
+
+        public Contact()
+        {
+            
+        }
+
 
         public override string ToString()
         {
@@ -67,6 +76,14 @@ namespace ClairvoyantSQL.Models
         //    Email = email;
 
         //}
+
+
+
+
+
+
+
+
 
 
 

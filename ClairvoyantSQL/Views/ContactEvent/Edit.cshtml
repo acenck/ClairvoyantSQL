@@ -1,0 +1,41 @@
+﻿
+<div class="container-sm shadow p-3 mb-5 bg-white rounded">
+
+    <h1>Edit Event</h1>
+
+    <form method="post" action="/contactevent/edit">
+
+        @{ var evt = ViewBag.contactToEdit;}
+
+        <input type="hidden" value="@ViewBag.contactToEdit.Id" name="contactId" />
+
+
+        <div class="form-group">
+            <div>
+                <label>Event Type</label>
+                <input name="firstname" type="text" class="form-control" value="@evt.FirstName" />
+            </div>
+            <div>
+                <label>Message</label>
+                <input name="lastname" type="text" class="form-control" value="@evt.LastName" />
+            </div>
+            <div>
+                <label>Date</label>
+                <input name="phone" type="text" class="form-control" value="@evt.Phone" />
+            </div>
+            
+       
+        </div>
+
+
+
+        <input style="display: inline-block;" type="submit" class="btn btn-outline-primary" value="Save" />
+
+    </form>
+
+    <form style="display:inline-block" method="get" action="/contactevent/delete">
+        <input type="hidden" value="@ViewBag.contactToEdit.Id" name="contactId" />
+
+        <input type="submit" class="btn btn-danger" value="Delete" />
+    </form>
+</div>

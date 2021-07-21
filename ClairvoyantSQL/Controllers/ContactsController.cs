@@ -7,6 +7,8 @@ using ClairvoyantSQL.Models;
 using ClairvoyantSQL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,6 +17,12 @@ namespace ClairvoyantSQL.Controllers
     public class ContactsController : Controller
     {
 
+        private ContactDbContext context;
+
+        public ContactsController(ContactDbContext dbContext)
+        {
+            context = dbContext;
+        }
         
 
         // GET: /<controller>/
@@ -22,9 +30,11 @@ namespace ClairvoyantSQL.Controllers
         public IActionResult Index()
         {
 
-            List<Contact> Contacts = new List<Contact>(ContactData.GetAll());
+            List<Contact> contacts = context.Contacts
+                .Include(c => c.Category)
+                .ToList();
 
-            return View(Contacts);
+            return View(contacts);
             
         }
             
@@ -32,7 +42,9 @@ namespace ClairvoyantSQL.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            AddContactViewModel addContactViewModel = new AddContactViewModel();
+
+            List<ContactCategory> categories = context.Categories.ToList();
+            AddContactViewModel addContactViewModel = new AddContactViewModel(categories);
 
             return View(addContactViewModel);
         }
@@ -45,6 +57,7 @@ namespace ClairvoyantSQL.Controllers
             if (ModelState.IsValid)
             {
 
+                ContactCategory category = context.Categories.Find(addContactViewModel.CategoryId);
 
                 Contact newContact = new Contact
                 {
@@ -52,54 +65,86 @@ namespace ClairvoyantSQL.Controllers
                     LastName = addContactViewModel.LastName,
                     Phone = addContactViewModel.Phone,
                     Email = addContactViewModel.Email,
-                    Type = addContactViewModel.Type
-
+                    Category = category
                 };
 
-                ContactData.Add(newContact);
+               
 
+
+                context.Contacts.Add(newContact);
+                context.SaveChanges();
 
                 return Redirect("/Contacts");
+
             }
 
             return View(addContactViewModel);
         }
 
-        public IActionResult Delete()
-        {
-            var Contacts = ContactData.GetAll();
+        //method currently not in use
+        //public IActionResult Delete()
+        //{
+        //    ViewBag.contacts = context.Contacts.ToList();
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        
-        
+
+        [Route("Contacts/Edit/{contactId}")]
         public IActionResult Edit(int contactId)
         {
-            ViewBag.contactToEdit = ContactData.GetById(contactId);
-            return View();
+            var contactToChange = context.Contacts.Find(contactId);
+            List<ContactCategory> categories = context.Categories.ToList();
+           
+
+            AddContactViewModel addContactViewModel = new AddContactViewModel(categories)
+            {
+                FirstName = contactToChange.FirstName,
+                LastName = contactToChange.LastName,
+                Phone = contactToChange.Phone,
+                Email = contactToChange.Email,
+                
+                
+            };
+
+                
+            ViewBag.contactToEdit = context.Contacts.Find(contactId);
+
+            return View(addContactViewModel);
         }
 
-        [HttpPost]
-        [Route("/Contacts/Edit")]
-        public IActionResult Edit(int contactId, string firstname, string lastname, string phone, string email)
-        {
-            var updated = ContactData.GetById(contactId);
 
-            updated.FirstName = firstname;
-            updated.LastName = lastname;
-            updated.Phone = phone;
-            updated.Email = email;
+            
+        [HttpPost]
+        public IActionResult Edit(int contactId, [Bind("contactId,FirstName,LastName,Phone,Email,CategoryId")] AddContactViewModel addContactViewModel)
+        {
+            var updated = context.Contacts.Find(contactId);
+            ContactCategory category = context.Categories.Find(addContactViewModel.CategoryId);
+
+            if (ModelState.IsValid)
+            {
+                updated.FirstName = addContactViewModel.FirstName;
+                updated.LastName = addContactViewModel.LastName;
+                updated.Phone = addContactViewModel.Phone;
+                updated.Email = addContactViewModel.Email;
+                updated.Category = category;
+
+                context.Update(updated);
+                context.SaveChanges();
+            }
+
             
             return Redirect("/Contacts");
         }
+
 
         [HttpGet]
         [Route("/Contacts/Delete/")]
         public IActionResult Delete(int contactId)
         {
-            ContactData.Remove(contactId);
-
+            Contact theContact = context.Contacts.Find(contactId);
+            context.Contacts.Remove(theContact);
+            context.SaveChanges();
 
             return Redirect("/Contacts");
 
@@ -108,3 +153,6 @@ namespace ClairvoyantSQL.Controllers
 
     }
 }
+
+     
+

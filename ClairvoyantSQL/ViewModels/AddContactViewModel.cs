@@ -21,14 +21,37 @@ namespace ClairvoyantSQL.ViewModels
         [EmailAddress]
         public string Email { get; set; }
 
-        public ContactType Type { get; set; }
+        [Required(ErrorMessage = "Category is required")]
+        public int CategoryId  { get; set; }
 
-        public List<SelectListItem> ContactTypes { get; set; } = new List<SelectListItem>
+        public List<SelectListItem> Categories { get; set; }
+        
+
+
+        public AddContactViewModel(List<ContactCategory> categories)
         {
-            new SelectListItem(ContactType.Personal.ToString(), ((int)ContactType.Personal).ToString()),
-            new SelectListItem(ContactType.Business.ToString(), ((int)ContactType.Business).ToString()),
-            new SelectListItem(ContactType.Undecided.ToString(), ((int)ContactType.Undecided).ToString())
-        };
+            Categories = new List<SelectListItem>();
+            
+
+            foreach (var category in categories)
+            {
+                Categories.Add(new SelectListItem
+                {
+                    Value = category.Id.ToString(),
+                    Text = category.Name
+                });
+            }
+        }
+
+            
+
+        public AddContactViewModel()
+        {
+
+        }
+        
+
+        //public Event EventType { get; set; }
 
 
 

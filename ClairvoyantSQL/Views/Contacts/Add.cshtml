@@ -29,9 +29,8 @@
             <span asp-validation-for="Email"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Type">Contact Label</label>
-            <select asp-for="Type" asp-items="Model.ContactTypes"></select>
-            <span asp-validation-for="Type"></span>
+            <label asp-for="CategoryId">Contact Category</label>
+            <select asp-for="CategoryId" asp-items="Model.Categories"></select>
         </div>
         @*<div>
             <label>Event</label>
